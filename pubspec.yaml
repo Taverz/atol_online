@@ -1,0 +1,33 @@
+name: atol_online
+description: "Integration Atol online"
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.3 <4.0.0'
+
+# Flutter 3.19.5 • channel stable • https://github.com/flutter/flutter.git
+# Framework • revision 300451adae (8 weeks ago) • 2024-03-27 21:54:07 -0500
+# Engine • revision e76c956498
+# Tools • Dart 3.3.3 • DevTools 2.31.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+  atol_online_dart:
+    path: atol_online_dart
+
+
+flutter:
+
+  uses-material-design: true
+
