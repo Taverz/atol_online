@@ -11,7 +11,7 @@ class ExchangeInfo {
     required this.receipt,
     required this.service,
     required this.timestamp,
-  });
+  }) : assert(externalId.isNotEmpty && timestamp.isNotEmpty);
 
   ExchangeInfo copyWith({
     String? externalId,
@@ -89,7 +89,10 @@ class Receipt {
     required this.payments,
     required this.vats,
     required this.total,
-  });
+  }) : assert(total > 1.0 &&
+            items.isNotEmpty &&
+            payments.isNotEmpty &&
+            vats.isNotEmpty);
 
   Receipt copyWith({
     Client? client,
@@ -157,13 +160,12 @@ class Receipt {
   bool operator ==(covariant Receipt other) {
     if (identical(this, other)) return true;
 
-    return
-      other.client == client &&
-      other.company == company &&
-      // listEquals(other.items, items) &&
-      // listEquals(other.payments, payments) &&
-      // listEquals(other.vats, vats) &&
-      other.total == total;
+    return other.client == client &&
+        other.company == company &&
+        // listEquals(other.items, items) &&
+        // listEquals(other.payments, payments) &&
+        // listEquals(other.vats, vats) &&
+        other.total == total;
   }
 
   @override
@@ -182,8 +184,7 @@ class Client {
 
   Client({
     required this.email,
-  });
-
+  }) : assert(email.isNotEmpty);
 
   Client copyWith({
     String? email,
@@ -235,7 +236,7 @@ class Company {
     required this.sno,
     required this.inn,
     required this.paymentAddress,
-  });
+  }) : assert(email.isNotEmpty && sno.isNotEmpty && inn.isNotEmpty);
 
   Company copyWith({
     String? email,
@@ -317,7 +318,7 @@ class Item {
     required this.paymentMethod,
     required this.paymentObject,
     required this.vat,
-  });
+  }): assert(price > 1.0 && sum > 1.0 && paymentMethod.isNotEmpty);
 
   Item copyWith({
     String? name,
