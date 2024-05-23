@@ -30,7 +30,7 @@ void main() {
     apiTest = ApiRequestAtolCheckImplTest(tokenCurrent: token);
   });
 
-  /// !!! first authorization and then ... other
+  /// !!! first authorization Get TOKEN and then ... other
   test('Repository Auth /  request real , mock model from request', () async {
     final modelSettings = testModel;
     final model = modelSettings.cmsParams.shop.last.access;
