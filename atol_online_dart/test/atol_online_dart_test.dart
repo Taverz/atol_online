@@ -21,7 +21,7 @@ void main() {
   late ApiRequestAtolCheck apiTest;
 
   setUp(() {
-    final token = '';
+    final token = 'Empty init';
     apiRealAuth = ApiRequestAtolAuthImpl();
     reposRealAuth = RepositoryAuthImpl(apiRealAuth);
     apiReal = ApiRequestAtolCheckImpl(tokenCurrent: token);
