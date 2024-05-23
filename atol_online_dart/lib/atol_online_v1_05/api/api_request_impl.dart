@@ -13,6 +13,8 @@ class ConstantApp {
 }
 
 class ApiRequestAtolCheckImpl implements ApiRequestAtolCheck {
+  final String tokenCurrent;
+  ApiRequestAtolCheckImpl({required this.tokenCurrent});
   /// ### Пример регистрации чека с операцией «Приход»:
   /// ```
   ///  https://online.atol.ru/possystem/v5/group1/sell?token=<token>
@@ -23,7 +25,6 @@ class ApiRequestAtolCheckImpl implements ApiRequestAtolCheck {
   /// * Token: <token>
   @override
   Future<Map> createCheck(ExchangeInfo model) async {
-    final tokenCurrent = '';
     final Map<String, dynamic> bodyParams = model.toMap();
 
     final url = Uri.https(
@@ -31,7 +32,7 @@ class ApiRequestAtolCheckImpl implements ApiRequestAtolCheck {
       '/${ConstantApp.postMainUrl}/${ConstantApp.version}/group1/sell?token=$tokenCurrent',
     );
     final Map<String, String> headerParam = {
-      'Content-type': 'application/json; charset=utf-8',
+      'Content-type': 'application/json', //'application/json; charset=utf-8'
       'Token': tokenCurrent
     };
     final response = await httpImport.post(

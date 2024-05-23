@@ -12,10 +12,11 @@ void main() {
   late final ApiRequestAtolCheck apiReal;
   late final ApiRequestAtolCheck apiTest;
   setUp(() {
-    apiReal = ApiRequestAtolCheckImpl();
+    final token = '';
+    apiReal = ApiRequestAtolCheckImpl(tokenCurrent: token);
     reposReal = RepositoryCheckImpl(apiReal);
 
-    apiTest = ApiRequestAtolCheckImplTest();
+    apiTest = ApiRequestAtolCheckImplTest(tokenCurrent: token);
   });
   test('Repository Check /  request real , mock model from request', () async {
     final model = await _getFixtureTestModelExchange();
@@ -34,7 +35,7 @@ void main() {
 }
 
 Future<ExchangeInfo> _getFixtureTestModelExchange() async {
-  final strData = await fixture('assets/mock_request/check_example_docs.json');
+  final strData = await fixture('../assets/mock_request/check_example_docs.json');
   final ExchangeInfo model = ExchangeInfo.fromJson(strData);
   return model;
 }

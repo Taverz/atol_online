@@ -35,10 +35,9 @@ class ExchangeInfo {
       'timestamp': timestamp,
     };
   }
-
   factory ExchangeInfo.fromMap(Map<String, dynamic> map) {
     return ExchangeInfo(
-      externalId: map['externalId'] as String,
+      externalId: map['external_id'] as String,
       receipt: Receipt.fromMap(map['receipt'] as Map<String, dynamic>),
       service: Service.fromMap(map['service'] as Map<String, dynamic>),
       timestamp: map['timestamp'] as String,
@@ -80,7 +79,7 @@ class Receipt {
   final List<Item> items;
   final List<Payment> payments;
   final List<VatElement> vats;
-  final int total;
+  final double total;
 
   Receipt({
     required this.client,
@@ -100,7 +99,7 @@ class Receipt {
     List<Item>? items,
     List<Payment>? payments,
     List<VatElement>? vats,
-    int? total,
+    double? total,
   }) {
     return Receipt(
       client: client ?? this.client,
@@ -128,21 +127,21 @@ class Receipt {
       client: Client.fromMap(map['client'] as Map<String, dynamic>),
       company: Company.fromMap(map['company'] as Map<String, dynamic>),
       items: List<Item>.from(
-        (map['items'] as List<int>).map<Item>(
+        (List<Map<String, dynamic>>.from(map['items']) ).map<Item>(
           (x) => Item.fromMap(x as Map<String, dynamic>),
         ),
       ),
       payments: List<Payment>.from(
-        (map['payments'] as List<int>).map<Payment>(
+        ( List<Map<String, dynamic>>.from(map['payments']) ).map<Payment>(
           (x) => Payment.fromMap(x as Map<String, dynamic>),
         ),
       ),
       vats: List<VatElement>.from(
-        (map['vats'] as List<int>).map<VatElement>(
+        (List<Map<String, dynamic>>.from(map['vats'])).map<VatElement>(
           (x) => VatElement.fromMap(x as Map<String, dynamic>),
         ),
       ),
-      total: map['total'] as int,
+      total: map['total'] as double,
     );
   }
 
@@ -257,7 +256,7 @@ class Company {
       'email': email,
       'sno': sno,
       'inn': inn,
-      'paymentAddress': paymentAddress,
+      'payment_address': paymentAddress,
     };
   }
 
@@ -266,7 +265,7 @@ class Company {
       email: map['email'] as String,
       sno: map['sno'] as String,
       inn: map['inn'] as String,
-      paymentAddress: map['paymentAddress'] as String,
+      paymentAddress: map['payment_address'] as String,
     );
   }
 
@@ -301,9 +300,9 @@ class Company {
 
 class Item {
   final String name;
-  final int price;
+  final double price;
   final double quantity;
-  final int sum;
+  final double sum;
   final String measurementUnit;
   final String paymentMethod;
   final String paymentObject;
@@ -322,9 +321,9 @@ class Item {
 
   Item copyWith({
     String? name,
-    int? price,
+    double? price,
     double? quantity,
-    int? sum,
+    double? sum,
     String? measurementUnit,
     String? paymentMethod,
     String? paymentObject,
@@ -358,12 +357,12 @@ class Item {
   factory Item.fromMap(Map<String, dynamic> map) {
     return Item(
       name: map['name'] as String,
-      price: map['price'] as int,
+      price: map['price'] as double,
       quantity: map['quantity'] as double,
-      sum: map['sum'] as int,
-      measurementUnit: map['measurementUnit'] as String,
-      paymentMethod: map['paymentMethod'] as String,
-      paymentObject: map['paymentObject'] as String,
+      sum: map['sum'] as double,
+      measurementUnit: map['measurement_unit'] as String,
+      paymentMethod: map['payment_method'] as String,
+      paymentObject: map['payment_object'] as String,
       vat: ItemVat.fromMap(map['vat'] as Map<String, dynamic>),
     );
   }
@@ -453,7 +452,7 @@ class ItemVat {
 
 class Payment {
   final int type;
-  final int sum;
+  final double sum;
 
   Payment({
     required this.type,
@@ -462,7 +461,7 @@ class Payment {
 
   Payment copyWith({
     int? type,
-    int? sum,
+    double? sum,
   }) {
     return Payment(
       type: type ?? this.type,
@@ -480,7 +479,7 @@ class Payment {
   factory Payment.fromMap(Map<String, dynamic> map) {
     return Payment(
       type: map['type'] as int,
-      sum: map['sum'] as int,
+      sum: map['sum'] as double,
     );
   }
 
@@ -581,13 +580,13 @@ class Service {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'callbackUrl': callbackUrl,
+      'callback_url': callbackUrl,
     };
   }
 
   factory Service.fromMap(Map<String, dynamic> map) {
     return Service(
-      callbackUrl: map['callbackUrl'] as String,
+      callbackUrl: map['callback_url'] as String,
     );
   }
 
