@@ -1,18 +1,21 @@
 import 'dart:convert';
 
 import 'package:atol_online_dart/atol_online_v1_05/api/api_auth_request.dart';
+import 'package:atol_online_dart/atol_online_v1_05/utils/const_app.dart';
 import 'package:http/http.dart' as httpImport;
 
 class ApiRequestAtolAuthImpl implements ApiRequestAtolAuth {
-  ApiRequestAtolAuthImpl();
+  
+  final mainUrl = '${ConstantApp.preUrl}${ConstantApp.mainUrl}/${ConstantApp.postMainUrl}/${ConstantApp.version}';
 
-  ///
+  /// https://online.atol.ru/possystem/v5/getToken
   @override
   Future<String> getAuthToken({
     required String login,
     required String password,
   }) async {
-    final url = Uri.parse('https://online.atol.ru/possystem/v5/getToken');
+    // ${ConstantApp.postMainUrl}/${ConstantApp.version}
+    final url = Uri.parse('$mainUrl/getToken');
     final headers = {'Content-Type': 'application/json; charset=utf-8'};
     final body = jsonEncode({
       'login': login,

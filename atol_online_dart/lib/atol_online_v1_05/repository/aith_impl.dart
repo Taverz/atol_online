@@ -6,12 +6,12 @@ import 'package:atol_online_dart/check_network.dart';
 class RepositoryAuthImpl implements RepositoryAuth {
   final ApiRequestAtolAuth apiReq;
   const RepositoryAuthImpl(this.apiReq);
+  
+  @override
   Future<dynamic> getAuthToken(Access modelSettings) async {
-    final networkConnect = await CheckNetworkCustom.checkNetwork();
-    if (!networkConnect) {
-      throw Exception('No connect network');
-    }
-    final String result = await apiReq.getAuthToken(login: modelSettings.login, password: modelSettings.password);
+    await CheckNetworkCustom.checkNetwork();
+    final String result = await apiReq.getAuthToken(
+        login: modelSettings.login, password: modelSettings.password);
     print(result);
     return result;
   }

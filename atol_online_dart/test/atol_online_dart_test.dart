@@ -12,23 +12,37 @@ import 'package:atol_online_dart/atol_online_v1_05/test_data/test_data.dart';
 import 'package:atol_online_dart/fixture_reader.dart';
 import 'package:test/test.dart';
 
-
 void main() {
-  late final RepositoryCheck reposReal;
-  late final ApiRequestAtolCheck apiReal;
-  late final RepositoryAuth reposRealAuth;
-  late final ApiRequestAtolAuth apiRealAuth;
+  late RepositoryCheck reposReal;
+  ApiRequestAtolCheck? apiReal;
+  late RepositoryAuth reposRealAuth;
+  late ApiRequestAtolAuth apiRealAuth;
 
-  late final ApiRequestAtolCheck apiTest;
+  late ApiRequestAtolCheck apiTest;
+
   setUp(() {
     final token = '';
     apiRealAuth = ApiRequestAtolAuthImpl();
     reposRealAuth = RepositoryAuthImpl(apiRealAuth);
     apiReal = ApiRequestAtolCheckImpl(tokenCurrent: token);
-    reposReal = RepositoryCheckImpl(apiReal);
+    reposReal = RepositoryCheckImpl(apiReal!);
 
     apiTest = ApiRequestAtolCheckImplTest(tokenCurrent: token);
   });
+
+  /// !!! first authorization and then ... other
+  test('Repository Auth /  request real , mock model from request', () async {
+    final modelSettings = testModel;
+    final model = modelSettings.cmsParams.shop.last.access;
+    final dynamic result = await reposRealAuth.getAuthToken(model);
+
+    print(result);
+    expect(result.runtimeType, String);
+    apiReal = ApiRequestAtolCheckImpl(tokenCurrent: result);
+  });
+
+  //////////
+
   test('Repository Check /  request real , mock model from request', () async {
     final model = await _getFixtureTestModelExchange();
     final Map<dynamic, dynamic> result = await reposReal.createCheck(model);
@@ -43,20 +57,6 @@ void main() {
     print(result);
     expect(result, {});
   });
-
-  //////////
-
-
-  test('Repository Auth /  request real , mock model from request', () async {
-    final modelSettings = testModel;
-    final model = modelSettings.cmsParams.shop.first.access;
-    final dynamic result = await reposRealAuth.getAuthToken(model);
-
-    print(result);
-    expect(result, {});
-  });
-
-
 }
 
 Future<ExchangeInfo> _getFixtureTestModelExchange() async {

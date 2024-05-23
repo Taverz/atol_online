@@ -5,7 +5,6 @@ import 'package:atol_online_dart/atol_online_v1_05/model/request_model_exchange_
 import 'package:atol_online_dart/atol_online_v1_05/utils/const_app.dart';
 import 'package:http/http.dart' as httpImport;
 
-
 class ApiRequestAtolCheckImpl implements ApiRequestAtolCheck {
   final String tokenCurrent;
   ApiRequestAtolCheckImpl({required this.tokenCurrent});
@@ -26,14 +25,16 @@ class ApiRequestAtolCheckImpl implements ApiRequestAtolCheck {
       ConstantApp.mainUrl,
       '/${ConstantApp.postMainUrl}/${ConstantApp.version}/group1/sell?token=$tokenCurrent',
     );
-    final Map<String, String> headerParam = {
-      'Content-type': 'application/json', //'application/json; charset=utf-8'
+    final headerParam = {
+      'Content-Type':
+          'application/json; charset=utf-8', //'application/json; charset=utf-8'
       'Token': tokenCurrent
     };
+
     final response = await httpImport.post(
       url,
       headers: headerParam,
-      body: bodyParams,
+      body: jsonEncode(bodyParams),
     );
     final decode = jsonDecode(response.body);
     print('Response status: ${response.statusCode}');

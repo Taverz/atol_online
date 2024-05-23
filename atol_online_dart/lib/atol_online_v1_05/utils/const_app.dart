@@ -3,5 +3,8 @@ class ConstantApp {
   static final preUrl = 'https://';
   static final mainUrl = 'online.atol.ru';
   static final postMainUrl = 'possystem';
-  static final version = 'v5';
+  static final version = ffd_1_5;
+
+  static final ffd_1_5 = 'v4';
+  static final ffd_1_2 = 'v5';
 }

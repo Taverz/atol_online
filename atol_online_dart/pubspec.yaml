@@ -10,6 +10,8 @@ environment:
 dependencies:
   # path: ^1.8.0
   http: ^1.2.1
+  ## From check network
+  # dart_ping: ^9.0.1
 
 dev_dependencies:
   lints: ^3.0.0
