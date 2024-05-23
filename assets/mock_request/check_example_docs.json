@@ -20,7 +20,7 @@
                 "payment_method": "full_payment",
                 "payment_object": "commodity",
                 "vat": {
-                    "type": "vat18"
+                    "type": "none"
                 }
             },
             {
@@ -32,7 +32,7 @@
                 "payment_method": "full_payment",
                 "payment_object": "commodity",
                 "vat": {
-                    "type": "vat10"
+                    "type": "none"
                 }
             }
         ],
@@ -44,11 +44,11 @@
         ],
         "vats": [
             {
-                "type": "vat18",
+                "type": "none",
                 "sum": 45.76
             },
             {
-                "type": "vat10",
+                "type": "none",
                 "sum": 9.09
             }
         ],
