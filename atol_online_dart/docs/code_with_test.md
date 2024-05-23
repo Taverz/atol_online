@@ -95,6 +95,7 @@ void main() {
 Для того чтобы тесты работали, необходимо внести изменения в функции библиотеки, чтобы они принимали кастомный HTTP клиент. В реальном коде вы сможете передавать реальный клиент `http.Client`, а в тестах — мок-версию.
 
 #### Пример изменения функции `getAuthToken`:
+
 ```dart
 Future<String> getAuthToken(String login, String password, [http.Client? client]) async {
   client ??= http.Client();
