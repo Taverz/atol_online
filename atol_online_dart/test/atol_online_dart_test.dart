@@ -20,8 +20,9 @@ void main() {
 
   late ApiRequestAtolCheck apiTest;
 
+  String token = 'Empty init';
+
   setUp(() {
-    final token = 'Empty init';
     apiRealAuth = ApiRequestAtolAuthImpl();
     reposRealAuth = RepositoryAuthImpl(apiRealAuth);
     apiReal = ApiRequestAtolCheckImpl(tokenCurrent: token);
@@ -38,6 +39,9 @@ void main() {
 
     print(result);
     expect(result.runtimeType, String);
+
+
+    token = result.toString();
     apiReal = ApiRequestAtolCheckImpl(tokenCurrent: result);
     reposReal = RepositoryCheckImpl(apiReal!);
 
@@ -58,7 +62,7 @@ void main() {
   //   print(result);
   //   expect(result, {});
   // });
-  
+
   test('Repository Check /  request test , mock model from request', () async {
     final model = await _getFixtureTestModelExchange();
     final Map<dynamic, dynamic> result = await apiTest.createCheck(model);
