@@ -39,17 +39,26 @@ void main() {
     print(result);
     expect(result.runtimeType, String);
     apiReal = ApiRequestAtolCheckImpl(tokenCurrent: result);
+    reposReal = RepositoryCheckImpl(apiReal!);
+
+
+    final model2 = await _getFixtureTestModelExchange();
+    final Map<dynamic, dynamic> result2 = await reposReal.createCheck(model2);
+
+    print(result2);
+    expect(result2, {});
   });
 
   //////////
 
-  test('Repository Check /  request real , mock model from request', () async {
-    final model = await _getFixtureTestModelExchange();
-    final Map<dynamic, dynamic> result = await reposReal.createCheck(model);
+  // test('Repository Check /  request real , mock model from request', () async {
+  //   final model = await _getFixtureTestModelExchange();
+  //   final Map<dynamic, dynamic> result = await reposReal.createCheck(model);
 
-    print(result);
-    expect(result, {});
-  });
+  //   print(result);
+  //   expect(result, {});
+  // });
+  
   test('Repository Check /  request test , mock model from request', () async {
     final model = await _getFixtureTestModelExchange();
     final Map<dynamic, dynamic> result = await apiTest.createCheck(model);
