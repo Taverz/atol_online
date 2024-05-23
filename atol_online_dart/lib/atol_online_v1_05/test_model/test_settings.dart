@@ -1,17 +1,16 @@
 //TODO: env load
 
-@Deprecated('NO used plize')
-class TestModelSettings {
+class ModelSettings {
     final CmsParams cmsParams;
 
-    TestModelSettings({
+    ModelSettings({
         required this.cmsParams,
     });
 
-    TestModelSettings copyWith({
+    ModelSettings copyWith({
         CmsParams? cmsParams,
     }) => 
-        TestModelSettings(
+        ModelSettings(
             cmsParams: cmsParams ?? this.cmsParams,
         );
 }
