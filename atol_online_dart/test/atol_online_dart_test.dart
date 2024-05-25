@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:atol_online_dart/atol_online_v1_05/api/api_auth_request.dart';
 import 'package:atol_online_dart/atol_online_v1_05/api/api_auth_request_impl.dart';
 import 'package:atol_online_dart/atol_online_v1_05/api/api_request.dart';
@@ -21,6 +23,7 @@ void main() {
   late ApiRequestAtolCheck apiTest;
 
   String token = 'Empty init';
+  String codeGroup = 'Empty init';
 
   setUp(() {
     apiRealAuth = ApiRequestAtolAuthImpl();
@@ -35,22 +38,34 @@ void main() {
   test('Repository Auth /  request real , mock model from request', () async {
     final modelSettings = testModel;
     final model = modelSettings.cmsParams.shop.last.access;
+    final modelGroupeCode = modelSettings.cmsParams.shop.last.access.groupCode;
     final dynamic result = await reposRealAuth.getAuthToken(model);
 
     print(result);
     expect(result.runtimeType, String);
 
-
     token = result.toString();
+    codeGroup = modelGroupeCode;
     apiReal = ApiRequestAtolCheckImpl(tokenCurrent: result);
     reposReal = RepositoryCheckImpl(apiReal!);
 
-
     final model2 = await _getFixtureTestModelExchange();
-    final Map<dynamic, dynamic> result2 = await reposReal.createCheck(model2);
+    final ranomExternalId = Random().nextInt(10000).toString();
+    final changeModel = model2.copyWith(externalId: ranomExternalId);
+    final Map<dynamic, dynamic> result2 = await reposReal.createCheck(
+      changeModel,
+      modelGroupeCode,
+    );
 
     print(result2);
-    expect(result2, {});
+    final res = result2.isNotEmpty && result2['error'] == null;
+    // {
+    //   "uuid": "3478b698-bdd8-433e-8348-d7c9f17f480f",
+    //   "status": "wait",
+    //   "error": null,
+    //   "timestamp": "25.05.2024 09:37:44"
+    // },
+    expect(res, true);
   });
 
   //////////
@@ -65,7 +80,8 @@ void main() {
 
   test('Repository Check /  request test , mock model from request', () async {
     final model = await _getFixtureTestModelExchange();
-    final Map<dynamic, dynamic> result = await apiTest.createCheck(model);
+    final Map<dynamic, dynamic> result =
+        await apiTest.createCheck(model, codeGroup);
 
     print(result);
     expect(result, {});

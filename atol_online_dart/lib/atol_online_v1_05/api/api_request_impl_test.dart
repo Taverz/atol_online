@@ -5,7 +5,7 @@ class ApiRequestAtolCheckImplTest implements ApiRequestAtolCheck {
   final String tokenCurrent;
   ApiRequestAtolCheckImplTest({required this.tokenCurrent});
   @override
-  Future<Map> createCheck(ExchangeInfo model) async {
+  Future<Map> createCheck(ExchangeInfo model, String codeGroup) async {
     // TODO: implement createCheck
     throw UnimplementedError();
   }

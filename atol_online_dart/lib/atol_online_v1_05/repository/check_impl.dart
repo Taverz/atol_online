@@ -8,9 +8,9 @@ class RepositoryCheckImpl implements RepositoryCheck {
   const RepositoryCheckImpl(this.apiReq);
   
   @override
-  Future<dynamic> createCheck(ExchangeInfo exchangeInfo) async {
+  Future<dynamic> createCheck(ExchangeInfo exchangeInfo, String codeGroup) async {
     await CheckNetworkCustom.checkNetwork();
-    final Map<dynamic, dynamic> result = await apiReq.createCheck(exchangeInfo);
+    final Map<dynamic, dynamic> result = await apiReq.createCheck(exchangeInfo, codeGroup);
     print(result);
     return result;
   }

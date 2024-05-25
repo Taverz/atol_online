@@ -3,6 +3,6 @@ import 'package:atol_online_dart/atol_online_v1_05/model/request_model_exchange_
 abstract class ApiRequestAtolCheck {
   final String tokenCurrent;
   ApiRequestAtolCheck({required this.tokenCurrent});
-  Future<Map> createCheck(ExchangeInfo model);
+  Future<Map> createCheck(ExchangeInfo model, String codeGroup);
   Future<dynamic> returnCheck();
 }

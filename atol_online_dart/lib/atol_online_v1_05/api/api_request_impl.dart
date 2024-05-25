@@ -18,12 +18,12 @@ class ApiRequestAtolCheckImpl implements ApiRequestAtolCheck {
   /// * Content-type: application/json; charset=utf-8
   /// * Token: <token>
   @override
-  Future<Map> createCheck(ExchangeInfo model) async {
+  Future<Map> createCheck(ExchangeInfo model, String codeGroup) async {
     final Map<String, dynamic> bodyParams = model.toMap();
 
     final url = Uri.https(
       ConstantApp.mainUrl,
-      '/${ConstantApp.postMainUrl}/${ConstantApp.version}/group1/sell?token=$tokenCurrent',
+      '/${ConstantApp.postMainUrl}/${ConstantApp.version}/$codeGroup/sell',
     );
     final headerParam = {
       'Content-Type':

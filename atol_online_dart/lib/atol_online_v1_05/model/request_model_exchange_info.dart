@@ -29,7 +29,7 @@ class ExchangeInfo {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'externalId': externalId,
+      'external_id': externalId,
       'receipt': receipt.toMap(),
       'service': service.toMap(),
       'timestamp': timestamp,
@@ -347,9 +347,9 @@ class Item {
       'price': price,
       'quantity': quantity,
       'sum': sum,
-      'measurementUnit': measurementUnit,
-      'paymentMethod': paymentMethod,
-      'paymentObject': paymentObject,
+      'measurement_unit': measurementUnit,
+      'payment_method': paymentMethod,
+      'payment_object': paymentObject,
       'vat': vat.toMap(),
     };
   }
