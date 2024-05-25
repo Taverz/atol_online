@@ -202,6 +202,28 @@ This `README.md` provides a clear and concise guide for users to understand how 
 ],
 
 
+### vat -> sum
+
+```
+if type == none
+ sum = 0.0
+else
+ sum = %
+```
+
+
+ "vats": [
+            {
+                "type": "none",
+                "sum": 0.0
+            },
+            {
+                "type": "none",
+                "sum": 0.0
+            }
+        ],
+
+
 ### payment_object v1_4
 
 В поле `payment_object` нужно указывать признак предмета расчёта. Возможные значения этого поля включают:
