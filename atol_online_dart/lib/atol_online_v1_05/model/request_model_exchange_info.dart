@@ -306,8 +306,8 @@ class Item {
   final double quantity;
   final double sum;
   final String measurementUnit;
-  final String paymentMethod;
-  final String paymentObject;
+  final dynamic paymentMethod;
+  final dynamic paymentObject;
   final ItemVat vat;
 
   Item({
@@ -319,7 +319,7 @@ class Item {
     required this.paymentMethod,
     required this.paymentObject,
     required this.vat,
-  }): assert(price > 1.0 && sum > 1.0 && paymentMethod.isNotEmpty);
+  }): assert(price > 1.0 && sum > 1.0 );
 
   Item copyWith({
     String? name,
@@ -327,7 +327,7 @@ class Item {
     double? quantity,
     double? sum,
     String? measurementUnit,
-    String? paymentMethod,
+    dynamic paymentMethod,
     String? paymentObject,
     ItemVat? vat,
   }) {
@@ -363,8 +363,8 @@ class Item {
       quantity: map['quantity'] as double,
       sum: map['sum'] as double,
       measurementUnit: map['measurement_unit'] as String,
-      paymentMethod: map['payment_method'] as String,
-      paymentObject: map['payment_object'] as String,
+      paymentMethod: map['payment_method'] as dynamic,
+      paymentObject: map['payment_object'] as dynamic,
       vat: ItemVat.fromMap(map['vat'] as Map<String, dynamic>),
     );
   }
