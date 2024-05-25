@@ -17,7 +17,7 @@
                 "quantity": 0.3,
                 "sum": 300.00,
                 "measurement_unit": "кг",
-                "payment_method": "full_payment",
+                "payment_method": 1,
                 "payment_object": "commodity",
                 "vat": {
                     "type": "none"
@@ -29,7 +29,7 @@
                 "quantity": 1.0,
                 "sum": 100.00,
                 "measurement_unit": "Упаковка 10 шт.",
-                "payment_method": "full_payment",
+                "payment_method": 1,
                 "payment_object": "commodity",
                 "vat": {
                     "type": "none"

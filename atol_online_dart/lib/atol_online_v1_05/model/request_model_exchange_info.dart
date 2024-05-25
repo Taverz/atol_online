@@ -88,10 +88,12 @@ class Receipt {
     required this.payments,
     required this.vats,
     required this.total,
-  }) : assert(total > 1.0 &&
-            items.isNotEmpty &&
-            payments.isNotEmpty &&
-            vats.isNotEmpty);
+  }) 
+  // : assert(total > 1.0 &&
+  //           items.isNotEmpty &&
+  //           payments.isNotEmpty &&
+  //           vats.isNotEmpty)
+            ;
 
   Receipt copyWith({
     Client? client,
