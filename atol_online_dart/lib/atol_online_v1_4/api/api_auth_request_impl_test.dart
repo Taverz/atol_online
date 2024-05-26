@@ -1,4 +1,4 @@
-import 'package:atol_online_dart/atol_online_v1_05/api/api_auth_request.dart';
+import 'package:atol_online_dart/atol_online_v1_4/api/api_auth_request.dart';
 
 class ApiRequestAtolAuthImplTest implements ApiRequestAtolAuth {
   ApiRequestAtolAuthImplTest();

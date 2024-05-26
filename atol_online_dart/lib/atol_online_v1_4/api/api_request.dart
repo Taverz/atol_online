@@ -1,4 +1,4 @@
-import 'package:atol_online_dart/atol_online_v1_05/model/request_model_exchange_info.dart';
+import 'package:atol_online_dart/atol_online_v1_4/model/request_model_exchange_info.dart';
 
 abstract class ApiRequestAtolCheck {
   final String tokenCurrent;

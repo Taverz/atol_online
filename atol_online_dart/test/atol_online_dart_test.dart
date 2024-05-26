@@ -1,16 +1,16 @@
 import 'dart:math';
 
-import 'package:atol_online_dart/atol_online_v1_05/api/api_auth_request.dart';
-import 'package:atol_online_dart/atol_online_v1_05/api/api_auth_request_impl.dart';
-import 'package:atol_online_dart/atol_online_v1_05/api/api_request.dart';
-import 'package:atol_online_dart/atol_online_v1_05/api/api_request_impl.dart';
-import 'package:atol_online_dart/atol_online_v1_05/api/api_request_impl_test.dart';
-import 'package:atol_online_dart/atol_online_v1_05/model/request_model_exchange_info.dart';
-import 'package:atol_online_dart/atol_online_v1_05/repository/aith_impl.dart';
-import 'package:atol_online_dart/atol_online_v1_05/repository/auth.dart';
-import 'package:atol_online_dart/atol_online_v1_05/repository/check.dart';
-import 'package:atol_online_dart/atol_online_v1_05/repository/check_impl.dart';
-import 'package:atol_online_dart/atol_online_v1_05/test_data/test_data.dart';
+import 'package:atol_online_dart/atol_online_v1_4/api/api_auth_request.dart';
+import 'package:atol_online_dart/atol_online_v1_4/api/api_auth_request_impl.dart';
+import 'package:atol_online_dart/atol_online_v1_4/api/api_request.dart';
+import 'package:atol_online_dart/atol_online_v1_4/api/api_request_impl.dart';
+import 'package:atol_online_dart/atol_online_v1_4/api/api_request_impl_test.dart';
+import 'package:atol_online_dart/atol_online_v1_4/model/request_model_exchange_info.dart';
+import 'package:atol_online_dart/atol_online_v1_4/repository/aith_impl.dart';
+import 'package:atol_online_dart/atol_online_v1_4/repository/auth.dart';
+import 'package:atol_online_dart/atol_online_v1_4/repository/check.dart';
+import 'package:atol_online_dart/atol_online_v1_4/repository/check_impl.dart';
+import 'package:atol_online_dart/atol_online_v1_4/test_data/test_data.dart';
 import 'package:atol_online_dart/fixture_reader.dart';
 import 'package:test/test.dart';
 

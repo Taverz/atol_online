@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:atol_online_dart/atol_online_v1_05/api/api_auth_request.dart';
-import 'package:atol_online_dart/atol_online_v1_05/utils/const_app.dart';
+import 'package:atol_online_dart/atol_online_v1_4/api/api_auth_request.dart';
+import 'package:atol_online_dart/atol_online_v1_4/utils/const_app.dart';
 import 'package:http/http.dart' as httpImport;
 
 class ApiRequestAtolAuthImpl implements ApiRequestAtolAuth {
