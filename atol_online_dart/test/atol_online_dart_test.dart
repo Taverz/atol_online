@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:atol_online_dart/atol_online_v1_4/api/api_auth_request.dart';
 import 'package:atol_online_dart/atol_online_v1_4/api/api_auth_request_impl.dart';
-import 'package:atol_online_dart/atol_online_v1_4/api/api_request.dart';
-import 'package:atol_online_dart/atol_online_v1_4/api/api_request_impl.dart';
-import 'package:atol_online_dart/atol_online_v1_4/api/api_request_impl_test.dart';
+import 'package:atol_online_dart/atol_online_v1_4/api/api_check_request.dart';
+import 'package:atol_online_dart/atol_online_v1_4/api/api_check_request_impl.dart';
+import 'package:atol_online_dart/atol_online_v1_4/api/api_check_request_impl_test.dart';
 import 'package:atol_online_dart/atol_online_v1_4/model/request_model_exchange_info.dart';
 import 'package:atol_online_dart/atol_online_v1_4/repository/aith_impl.dart';
 import 'package:atol_online_dart/atol_online_v1_4/repository/auth.dart';
