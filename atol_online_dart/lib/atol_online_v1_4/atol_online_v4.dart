@@ -34,6 +34,7 @@ class AtolOnlineV4 {
     }
     final result =
         await reposCheck!.createCheck(exchangeInfo, shop.access.groupCode);
+    print(result);
   }
 
 }
