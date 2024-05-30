@@ -348,3 +348,666 @@ enum
 • 33 - о реализуемом товаре, подлежащем маркировке средством
 идентификации, имеющем код маркировки, за исключением
 подакцизного товара
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- -------_____------- -->
+
+
+
+
+void main() async {
+  final settings = ModelSettings();
+  final shop = Shop(access: AccessInfo(groupCode: 'group-code', token: 'token'));
+  
+  final atolOnline = AtolOnlineV4(
+    settingStore: settings,
+    shop: shop,
+  );
+  
+  await atolOnline.auth();
+  
+  final exchangeInfo = ExchangeInfo();
+  await atolOnline.createCheck(exchangeInfo);
+}
+
+
+
+
+
+Для рефакторинга кода с использованием шаблонов проектирования можно применить паттерн "Наблюдатель" (Observer), чтобы обеспечить обновление `RepositoryCheck` при изменении токена, не нарушая принципа слабого связывания. В данном случае, `RepositoryAuth` будет испускать событие при успешной аутентификации, и `AtolOnlineV4` будет подписываться на это событие для обновления `RepositoryCheck`.
+
+### Шаги:
+
+1. **Создайте интерфейс `AuthObserver`:**
+
+```dart
+abstract class AuthObserver {
+  void onAuthTokenChanged(String token);
+}
+```
+
+2. **Измените `RepositoryAuth` для поддержки подписчиков:**
+
+```dart
+abstract class RepositoryAuth {
+  Future<String> getAuthToken(String access);
+  void addObserver(AuthObserver observer);
+  void removeObserver(AuthObserver observer);
+}
+
+class RepositoryAuthImpl implements RepositoryAuth {
+  final ApiRequestAtolAuth apiRequest;
+  final List<AuthObserver> _observers = [];
+
+  RepositoryAuthImpl(this.apiRequest);
+
+  @override
+  Future<String> getAuthToken(String access) async {
+    final token = await apiRequest.getAuthToken(access);
+    _notifyObservers(token);
+    return token;
+  }
+
+  void _notifyObservers(String token) {
+    for (var observer in _observers) {
+      observer.onAuthTokenChanged(token);
+    }
+  }
+
+  @override
+  void addObserver(AuthObserver observer) {
+    _observers.add(observer);
+  }
+
+  @override
+  void removeObserver(AuthObserver observer) {
+    _observers.remove(observer);
+  }
+}
+```
+
+3. **Измените `AtolOnlineV4` для подписки на события из `RepositoryAuth`:**
+
+```dart
+class AtolOnlineV4 implements AuthObserver {
+  final ModelSettings settingStore;
+  final Shop shop;
+  final RepositoryAuth reposAuth;
+  RepositoryCheck? reposCheck;
+  String? token;
+
+  AtolOnlineV4({
+    required this.settingStore,
+    required this.shop,
+  }) : this.reposAuth = RepositoryAuthImpl(ApiRequestAtolAuthImpl()) {
+    reposAuth.addObserver(this);
+  }
+
+  @override
+  void onAuthTokenChanged(String token) {
+    this.token = token;
+    this.reposCheck = RepositoryCheckImpl(ApiRequestAtolCheckImpl(tokenCurrent: token));
+  }
+
+  /// 1 Step
+  Future<void> auth() async {
+    final resultToken = await reposAuth.getAuthToken(shop.access);
+    // token and reposCheck will be updated through the observer mechanism
+  }
+
+  /// 2 Step
+  Future<dynamic> createCheck(ExchangeInfo exchangeInfo) async {
+    if (reposCheck == null || token == null) {
+      throw Exception('No create token from init repo');
+    }
+    final result = await reposCheck!.createCheck(exchangeInfo, shop.access.groupCode);
+    print(result);
+  }
+}
+```
+
+Теперь `AtolOnlineV4` подписывается на обновления токена из `RepositoryAuth` и автоматически обновляет `RepositoryCheck` при изменении токена, не требуя прямого вызова из `auth()`.
+
+### Пример использования:
+
+```dart
+void main() async {
+  final settings = ModelSettings();
+  final shop = Shop(access: AccessInfo(groupCode: 'group-code', token: 'token'));
+  
+  final atolOnline = AtolOnlineV4(
+    settingStore: settings,
+    shop: shop,
+  );
+  
+  await atolOnline.auth();
+  
+  final exchangeInfo = ExchangeInfo();
+  await atolOnline.createCheck(exchangeInfo);
+}
+```
+
+Теперь вы используете паттерн "Наблюдатель" для обеспечения слабого связывания между `RepositoryAuth` и `RepositoryCheck`, что улучшает масштабируемость и поддержку кода.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------
+
+
+
+
+
+
+
+
+
+
+
+To avoid using the conditional initialization inside the `auth()` method and still achieve decoupling, we can use the Dependency Injection (DI) pattern combined with the Factory Method pattern. This way, we can inject the dependencies and handle the creation logic outside the `AtolOnlineV4` class.
+
+### Step 1: Define the Factory Interface and Implementation
+
+```dart
+abstract class RepositoryFactory {
+  RepositoryCheck createRepositoryCheck(String token);
+}
+
+class RepositoryFactoryImpl implements RepositoryFactory {
+  @override
+  RepositoryCheck createRepositoryCheck(String token) {
+    return RepositoryCheckImpl(ApiRequestAtolCheckImpl(tokenCurrent: token), token);
+  }
+}
+```
+
+### Step 2: Update `AtolOnlineV4` to Use Dependency Injection
+
+```dart
+class AtolOnlineV4 {
+  final ModelSettings settingStore;
+  final Shop shop;
+  final RepositoryAuth reposAuth;
+  final RepositoryFactory repositoryFactory;
+  RepositoryCheck? reposCheck;
+  String? token;
+
+  AtolOnlineV4({
+    required this.settingStore,
+    required this.shop,
+    required this.reposAuth,
+    required this.repositoryFactory,
+  });
+
+  Future<void> auth() async {
+    final resultToken = await reposAuth.getAuthToken(shop.access);
+    token = resultToken;
+
+    reposCheck = repositoryFactory.createRepositoryCheck(token!);
+    reposAuth.addObserver(reposCheck!);
+  }
+
+  Future<void> createCheck(ExchangeInfo exchangeInfo) async {
+    if (reposCheck == null || token == null) {
+      throw Exception('No create token from init repo');
+    }
+
+    final result = await reposCheck!.createCheck(exchangeInfo, shop.access.groupCode);
+    print(result);
+  }
+}
+```
+
+### Step 3: Refactor the Observer Pattern
+
+Ensure that `RepositoryCheckImpl` implements the `Observer` interface:
+
+```dart
+class RepositoryCheckImpl implements RepositoryCheck, Observer {
+  final ApiRequestAtolCheck apiRequest;
+  String _tokenCurrent;
+
+  RepositoryCheckImpl(this.apiRequest, this._tokenCurrent);
+
+  @override
+  void update(String token) {
+    _tokenCurrent = token;
+    apiRequest.updateToken(token);
+  }
+
+  @override
+  Future<dynamic> createCheck(ExchangeInfo exchangeInfo, String groupCode) async {
+    // Implementation of createCheck using _tokenCurrent
+  }
+}
+```
+
+### Step 4: Dependency Injection Setup
+
+Using a dependency injection framework like `get_it`, set up the dependencies:
+
+```dart
+final getIt = GetIt.instance;
+
+void setup() {
+  getIt.registerSingleton<ModelSettings>(ModelSettings());
+  getIt.registerSingleton<Shop>(Shop());
+  getIt.registerFactory<RepositoryAuth>(() => RepositoryAuthImpl(ApiRequestAtolAuthImpl()));
+  getIt.registerFactory<RepositoryFactory>(() => RepositoryFactoryImpl());
+
+  getIt.registerFactory<AtolOnlineV4>(() => AtolOnlineV4(
+    settingStore: getIt<ModelSettings>(),
+    shop: getIt<Shop>(),
+    reposAuth: getIt<RepositoryAuth>(),
+    repositoryFactory: getIt<RepositoryFactory>(),
+  ));
+}
+```
+
+### Step 5: Application Initialization
+
+In your application initialization:
+
+```dart
+void main() {
+  setup();
+  final atolOnline = getIt<AtolOnlineV4>();
+}
+```
+
+### Benefits
+
+By using the Factory Method pattern along with Dependency Injection, the creation of `RepositoryCheck` is handled by the `RepositoryFactory`, ensuring that `AtolOnlineV4` remains clean and focused on its primary responsibilities. This approach also maintains decoupling between `RepositoryAuth` and `RepositoryCheck`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+To achieve a decoupled design where `auth()` updates `RepositoryCheck` without the two features knowing about each other, we can use the Observer pattern. This pattern allows one object (the subject) to notify other objects (the observers) about changes in its state.
+
+Here is the refactored code using the Observer pattern:
+
+### Step 1: Define the Observer and Subject Interfaces
+
+```dart
+abstract class Observer {
+  void update(String token);
+}
+
+abstract class Subject {
+  void addObserver(Observer observer);
+  void removeObserver(Observer observer);
+  void notifyObservers();
+}
+```
+
+### Step 2: Implement the Subject in RepositoryAuth
+
+```dart
+class RepositoryAuthImpl extends Subject {
+  final ApiRequestAtolAuth apiRequest;
+  String? _token;
+  final List<Observer> _observers = [];
+
+  RepositoryAuthImpl(this.apiRequest);
+
+  Future<String> getAuthToken(Access access) async {
+    _token = await apiRequest.fetchToken(access);
+    notifyObservers();
+    return _token!;
+  }
+
+  @override
+  void addObserver(Observer observer) {
+    _observers.add(observer);
+  }
+
+  @override
+  void removeObserver(Observer observer) {
+    _observers.remove(observer);
+  }
+
+  @override
+  void notifyObservers() {
+    for (final observer in _observers) {
+      observer.update(_token!);
+    }
+  }
+}
+```
+
+### Step 3: Implement the Observer in RepositoryCheck
+
+```dart
+class RepositoryCheckImpl implements RepositoryCheck, Observer {
+  final ApiRequestAtolCheck apiRequest;
+  String _tokenCurrent;
+
+  RepositoryCheckImpl(this.apiRequest, this._tokenCurrent);
+
+  @override
+  void update(String token) {
+    _tokenCurrent = token;
+    apiRequest.updateToken(token);
+  }
+
+  @override
+  Future<dynamic> createCheck(ExchangeInfo exchangeInfo, String groupCode) async {
+    // Implementation of createCheck using _tokenCurrent
+  }
+}
+```
+
+### Step 4: Refactor `AtolOnlineV4` to Use the Observer Pattern
+
+```dart
+class AtolOnlineV4 {
+  final ModelSettings settingStore;
+  final Shop shop;
+  final RepositoryAuth reposAuth;
+  RepositoryCheck? reposCheck;
+  String? token;
+
+  AtolOnlineV4({
+    required this.settingStore,
+    required this.shop,
+  }) : reposAuth = RepositoryAuthImpl(ApiRequestAtolAuthImpl());
+
+  Future<void> auth() async {
+    final resultToken = await reposAuth.getAuthToken(shop.access);
+    token = resultToken;
+
+    if (reposCheck == null) {
+      reposCheck = RepositoryCheckImpl(ApiRequestAtolCheckImpl(tokenCurrent: token!), token!);
+      reposAuth.addObserver(reposCheck!);
+    }
+  }
+
+  Future<void> createCheck(ExchangeInfo exchangeInfo) async {
+    if (reposCheck == null || token == null) {
+      throw Exception('No create token from init repo');
+    }
+
+    final result = await reposCheck!.createCheck(exchangeInfo, shop.access.groupCode);
+    print(result);
+  }
+}
+```
+
+### Step 5: Dependency Injection and Initialization
+
+If you're using a dependency injection framework (e.g., `get_it`), you can set up the dependencies as follows:
+
+```dart
+final getIt = GetIt.instance;
+
+void setup() {
+  getIt.registerSingleton<ModelSettings>(ModelSettings());
+  getIt.registerSingleton<Shop>(Shop());
+  getIt.registerFactory<RepositoryAuth>(() => RepositoryAuthImpl(ApiRequestAtolAuthImpl()));
+  getIt.registerFactoryParam<RepositoryCheck, String, void>((token, _) => RepositoryCheckImpl(ApiRequestAtolCheckImpl(tokenCurrent: token), token));
+}
+```
+
+In your application initialization:
+
+```dart
+void main() {
+  setup();
+  final atolOnline = AtolOnlineV4(
+    settingStore: getIt<ModelSettings>(),
+    shop: getIt<Shop>(),
+  );
+}
+```
+
+By using the Observer pattern, you decouple `RepositoryAuth` and `RepositoryCheck`. `RepositoryCheck` observes `RepositoryAuth` for token updates, allowing each class to focus on its own responsibility without direct knowledge of the other.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+To refactor your class using design patterns, we can use the Use Case pattern, which is a common way to structure application logic in a clean and maintainable way. This pattern involves creating separate classes for each use case, ensuring single responsibility and easier testing.
+
+Let's create two use cases: `AuthUseCase` and `CreateCheckUseCase`.
+
+### Step 1: Create the Use Cases
+
+```dart
+class AuthUseCase {
+  final RepositoryAuth reposAuth;
+  final Shop shop;
+
+  AuthUseCase({
+    required this.reposAuth,
+    required this.shop,
+  });
+
+  Future<String> execute() async {
+    final resultToken = await reposAuth.getAuthToken(shop.access);
+    return resultToken;
+  }
+}
+
+class CreateCheckUseCase {
+  final RepositoryCheck reposCheck;
+  final Shop shop;
+
+  CreateCheckUseCase({
+    required this.reposCheck,
+    required this.shop,
+  });
+
+  Future<dynamic> execute(ExchangeInfo exchangeInfo) async {
+    final result = await reposCheck.createCheck(exchangeInfo, shop.access.groupCode);
+    return result;
+  }
+}
+```
+
+### Step 2: Refactor `AtolOnlineV4` to Use the Use Cases
+
+```dart
+class AtolOnlineV4 {
+  final ModelSettings settingStore;
+  final Shop shop;
+  final RepositoryAuth reposAuth;
+  RepositoryCheck? reposCheck;
+  String? token;
+
+  AtolOnlineV4({
+    required this.settingStore,
+    required this.shop,
+  }) : this.reposAuth = RepositoryAuthImpl(ApiRequestAtolAuthImpl());
+
+  Future<void> auth() async {
+    final authUseCase = AuthUseCase(
+      reposAuth: reposAuth,
+      shop: shop,
+    );
+    token = await authUseCase.execute();
+    reposCheck = RepositoryCheckImpl(ApiRequestAtolCheckImpl(tokenCurrent: token!));
+  }
+
+  Future<void> createCheck(ExchangeInfo exchangeInfo) async {
+    if (reposCheck == null || token == null) {
+      throw Exception('No create token from init repo');
+    }
+
+    final createCheckUseCase = CreateCheckUseCase(
+      reposCheck: reposCheck!,
+      shop: shop,
+    );
+
+    final result = await createCheckUseCase.execute(exchangeInfo);
+    print(result);
+  }
+}
+```
+
+### Step 3: Dependency Injection and Initialization
+
+If you're using a dependency injection framework (e.g., `get_it`), you can set up the dependencies as follows:
+
+```dart
+final getIt = GetIt.instance;
+
+void setup() {
+  getIt.registerSingleton<ModelSettings>(ModelSettings());
+  getIt.registerSingleton<Shop>(Shop());
+  getIt.registerFactory<RepositoryAuth>(() => RepositoryAuthImpl(ApiRequestAtolAuthImpl()));
+  getIt.registerFactoryParam<RepositoryCheck, String, void>((token, _) => RepositoryCheckImpl(ApiRequestAtolCheckImpl(tokenCurrent: token)));
+
+  getIt.registerFactory<AuthUseCase>(() => AuthUseCase(
+    reposAuth: getIt<RepositoryAuth>(),
+    shop: getIt<Shop>(),
+  ));
+
+  getIt.registerFactoryParam<CreateCheckUseCase, RepositoryCheck, void>((reposCheck, _) => CreateCheckUseCase(
+    reposCheck: reposCheck,
+    shop: getIt<Shop>(),
+  ));
+}
+```
+
+In your application initialization:
+
+```dart
+void main() {
+  setup();
+  final atolOnline = AtolOnlineV4(
+    settingStore: getIt<ModelSettings>(),
+    shop: getIt<Shop>(),
+  );
+}
+```
+
+By refactoring your code in this way, you follow the Single Responsibility Principle, making your classes easier to maintain and test. Each use case is now encapsulated in its own class, and your main class simply coordinates the use cases.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------
+
+
+
+
+
+
+
+
+
