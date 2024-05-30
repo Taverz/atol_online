@@ -7,6 +7,8 @@ import 'package:atol_online_dart/atol_online_v1_4/repository/check.dart';
 import 'package:atol_online_dart/atol_online_v1_4/repository/check_impl.dart';
 import 'package:atol_online_dart/atol_online_v1_4/test_model/test_settings.dart';
 
+
+/// TODO: Переделать на подобие UseCase который не знает о содержимом фичи Аторизации и Чека
 class AtolOnlineV4 {
   final ModelSettings settingStore;
   final Shop shop;

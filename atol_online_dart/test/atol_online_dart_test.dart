@@ -4,7 +4,7 @@ import 'package:atol_online_dart/atol_online_v1_4/api/api_auth_request.dart';
 import 'package:atol_online_dart/atol_online_v1_4/api/api_auth_request_impl.dart';
 import 'package:atol_online_dart/atol_online_v1_4/api/api_check_request.dart';
 import 'package:atol_online_dart/atol_online_v1_4/api/api_check_request_impl.dart';
-import 'package:atol_online_dart/atol_online_v1_4/api/api_check_request_impl_test.dart';
+// import 'package:atol_online_dart/atol_online_v1_4/api/api_check_request_impl_test.dart';
 import 'package:atol_online_dart/atol_online_v1_4/model/request_model_exchange_info.dart';
 import 'package:atol_online_dart/atol_online_v1_4/repository/aith_impl.dart';
 import 'package:atol_online_dart/atol_online_v1_4/repository/auth.dart';
@@ -20,10 +20,10 @@ void main() {
   late RepositoryAuth reposRealAuth;
   late ApiRequestAtolAuth apiRealAuth;
 
-  late ApiRequestAtolCheck apiTest;
+  // late ApiRequestAtolCheck apiTest;
 
   String token = 'Empty init';
-  String codeGroup = 'Empty init';
+  // String codeGroup = 'Empty init';
 
   setUp(() {
     apiRealAuth = ApiRequestAtolAuthImpl();
@@ -31,7 +31,7 @@ void main() {
     apiReal = ApiRequestAtolCheckImpl(tokenCurrent: token);
     reposReal = RepositoryCheckImpl(apiReal!);
 
-    apiTest = ApiRequestAtolCheckImplTest(tokenCurrent: token);
+    // apiTest = ApiRequestAtolCheckImplTest(tokenCurrent: token);
   });
 
   /// !!! first authorization Get TOKEN and then ... other
@@ -45,7 +45,7 @@ void main() {
     expect(result.runtimeType, String);
 
     token = result.toString();
-    codeGroup = modelGroupeCode;
+    // codeGroup = modelGroupeCode;
     apiReal = ApiRequestAtolCheckImpl(tokenCurrent: result);
     reposReal = RepositoryCheckImpl(apiReal!);
 
