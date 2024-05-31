@@ -40,3 +40,30 @@ class AtolOnlineV4 {
   }
 
 }
+
+
+abstract class UseCheck {
+  createCheck(){}
+}
+
+class SimpleCheck  implements UseCheck{
+  createCheck(){}
+}
+abstract class UseAuth {
+  authLogin(){}
+}
+
+class SimpleAuth  implements UseAuth{
+  authLogin(){}
+}
+class AtolOnl {
+  UseCheck useCheck = SimpleCheck();
+  UseAuth useAuth = SimpleAuth();
+  auth(){
+    useAuth.authLogin();
+    // useCheck = 
+  }
+  check(){
+    useCheck.createCheck();
+  }
+}
