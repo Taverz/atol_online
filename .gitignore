@@ -16,6 +16,9 @@ migrate_working_dir/
 *.iws
 .idea/
 
+atol_online_dart/lib/atol_online_v1_05/test_data/test_data.dart
+atol_online_dart/docs/code.md
+atol_online_dart/docs/code_with_test.md
 
 /assets/test_settings/
 /assets/test_settings

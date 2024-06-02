@@ -5,31 +5,31 @@
             "email": "kkt@kkt.ru"
         },
         "company": {
-            "email": "wqeqweqwq12@gmail.com",
+            "email": "emailsdas3@gmail.com",
             "sno": "usn_income",
-            "inn": "726503944115",
+            "inn": "611107324643955",
             "payment_address": "http://service-book.io/"
         },
         "items": [
             {
-                "name": "колбаса 22 Клинский Брауншвейгская с/к в/с ",
+                "name": "колбаса Клинский Брауншвейгская с/к в/с ",
                 "price": 1000.00,
                 "quantity": 0.3,
                 "sum": 300.00,
                 "measurement_unit": "кг",
-                "payment_method": "full_payment",
+                "payment_method": 1,
                 "payment_object": "commodity",
                 "vat": {
                     "type": "none"
                 }
             },
             {
-                "name": "яйцо 22 Окское куриное С0 белое",
+                "name": "яйцо Окское куриное С0 белое",
                 "price": 100.00,
                 "quantity": 1.0,
                 "sum": 100.00,
                 "measurement_unit": "Упаковка 10 шт.",
-                "payment_method": "full_payment",
+                "payment_method": 1,
                 "payment_object": "commodity",
                 "vat": {
                     "type": "none"
