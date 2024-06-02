@@ -61,7 +61,7 @@ atolOnline.createCheck(model2);
 
 ## Docs local in folder: 
 
-* DOCS_Official/API_atol_online_v4.pdf - Official documentation atol online
+* DOCS_Official/... - Official documentation atol online
 * atol_online_dart/docs/README.md - Me documentation code
 
 

@@ -1,0 +1,26 @@
+
+; # Исключить файлы документации
+
+DOCS_Official/Instructions for downloading receipts from XML files.docx
+DOCS_Official/API_service_ATOL_Online_v5.pdf
+DOCS_Official/API_atol_online_v4.pdf
+
+atol_online_dart/DOCS_Official/Instructions for downloading receipts from XML files.docx
+atol_online_dart/DOCS_Official/API_service_ATOL_Online_v5.pdf
+atol_online_dart/DOCS_Official/API_atol_online_v4.pdf
+
+
+; # Исключить другие файлы и директории, которые не должны быть опубликованы
+; *.iml
+; *.lock
+; .idea/
+; .DS_Store
+; *.log
+; build/
+; coverage/
+
+; # Исключить пользовательские файлы и каталоги
+; *.secret
+; *.key
+; *.pem
+

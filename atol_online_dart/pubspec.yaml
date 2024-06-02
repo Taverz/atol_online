@@ -1,6 +1,6 @@
 name: atol_online_dart
 description: A sample command-line application.
-version: 1.0.0
+version: 1.1.1
 repository: https://github.com/Taverz/atol_online
 
 environment:
@@ -8,13 +8,10 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  # path: ^1.8.0
   http: ^1.2.1
-  ## From check network
-  # dart_ping: ^9.0.1
 
 dev_dependencies:
-  lints: ^3.0.0
+  lints: ^4.0.0
   test: ^1.24.0
 
 dart:
