@@ -1,4 +1,8 @@
 
+## 1.1.2
+
+- Update pubspec.yaml - add platform
+- 
 ## 1.1.1
 
 - First worked version.
