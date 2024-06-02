@@ -8,19 +8,19 @@ final ModelSettings testModel = ModelSettings(
     shop: [
       Shop(
         access: Access(
-          groupCode: 'group_code_47828',
-          password: '5xMRY4tz',
-          login: 'e69a785b-09ba-462f-9cba-4d368c26b27a',
+          groupCode: 'group_code_11111',
+          password: '5x1111tz',
+          login: 'e37a985b-1111-1111-1111-2v364c20b37a',
         ),
-        hostname: 'https://city-creek-shop.ru/',
+        hostname: 'https://site.ru/',
         sno: TaxSystem_SNO.usnIncome,
         ffdVersion: FFDVersion.v1_5,
       ),
       Shop(
         access: Access(
-          groupCode: 'group_code_47828',
-          password: '5xMRY4tz',
-          login: 'e69a785b-09ba-462f-9cba-4d368c26b27a',
+          groupCode: 'group_code_11111',
+          password: '5x1111tz',
+          login: 'e37a985b-1111-1111-1111-2v364c20b37a',
         ),
         hostname: 'service-book.io',
         sno: TaxSystem_SNO.usnIncome,
@@ -28,8 +28,8 @@ final ModelSettings testModel = ModelSettings(
       ),
     ],
     kpp: '',
-    inn: '616507944955',
-    company: 'Заржецкий Александр Владиславович',
+    inn: '115306844342',
+    company: 'Николай Виктороич Леоднидович',
   ),
 );
 

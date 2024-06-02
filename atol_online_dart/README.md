@@ -44,13 +44,14 @@ final ModelSettings testModel = ModelSettings(
 
 /// Init system
 AtolOnlineV4 atolOnline = AtolOnlineV4(testModel);
+/// Auth server
+atolOnline.auth();
 //////------
 //// ### Cycle create check START - этот цикл нужно повторять постоянно при выдаче чека
 
 /// Create check model
 ExchangeInfo model2 = ...;
-/// Auth server
-atolOnline.auth();
+
 /// send/create check
 atolOnline.createCheck(model2);
 
@@ -58,7 +59,7 @@ atolOnline.createCheck(model2);
 
 ```
 
-## Docs local in folder:  
+## Docs local in folder: 
 
 * DOCS/API_atol_online_v4.pdf - Official documentation atol online
 * atol_online_dart/docs/REAME.md - Me documentation code
