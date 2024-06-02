@@ -4,7 +4,6 @@ import 'package:atol_online_dart/atol_online_v1_4/api/api_auth_request.dart';
 import 'package:atol_online_dart/atol_online_v1_4/api/api_auth_request_impl.dart';
 import 'package:atol_online_dart/atol_online_v1_4/api/api_check_request.dart';
 import 'package:atol_online_dart/atol_online_v1_4/api/api_check_request_impl.dart';
-// import 'package:atol_online_dart/atol_online_v1_4/api/api_check_request_impl_test.dart';
 import 'package:atol_online_dart/atol_online_v1_4/model/request_model_exchange_info.dart';
 import 'package:atol_online_dart/atol_online_v1_4/repository/aith_impl.dart';
 import 'package:atol_online_dart/atol_online_v1_4/repository/auth.dart';
@@ -22,13 +21,11 @@ void main() {
 
   // late ApiRequestAtolCheck apiTest;
 
-  String token = 'Empty init';
-  // String codeGroup = 'Empty init';
 
   setUp(() {
     apiRealAuth = ApiRequestAtolAuthImpl();
     reposRealAuth = RepositoryAuthImpl(apiRealAuth);
-    apiReal = ApiRequestAtolCheckImpl(tokenCurrent: token);
+    apiReal = ApiRequestAtolCheckImpl();
     reposReal = RepositoryCheckImpl(apiReal!);
 
     // apiTest = ApiRequestAtolCheckImplTest(tokenCurrent: token);
@@ -44,10 +41,7 @@ void main() {
     print(result);
     expect(result.runtimeType, String);
 
-    token = result.toString();
-    // codeGroup = modelGroupeCode;
-    apiReal = ApiRequestAtolCheckImpl(tokenCurrent: result);
-    reposReal = RepositoryCheckImpl(apiReal!);
+    reposReal.addToken(result);
 
     final model2 = await _getFixtureTestModelExchange();
     final ranomExternalId = Random().nextInt(10000).toString();
@@ -78,14 +72,14 @@ void main() {
   //   expect(result, {});
   // });
 
-  test('Repository Check /  request test , mock model from request', () async {
-    // final model = await _getFixtureTestModelExchange();
-    // final Map<dynamic, dynamic> result =
-    //     await apiTest.createCheck(model, codeGroup);
+  // test('Repository Check /  request test , mock model from request', () async {
+  //   // final model = await _getFixtureTestModelExchange();
+  //   // final Map<dynamic, dynamic> result =
+  //   //     await apiTest.createCheck(model, codeGroup);
 
-    // print(result);
-    // expect(result, {});
-  });
+  //   // print(result);
+  //   // expect(result, {});
+  // });
 }
 
 Future<ExchangeInfo> _getFixtureTestModelExchange() async {

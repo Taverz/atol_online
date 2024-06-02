@@ -6,8 +6,13 @@ import 'package:atol_online_dart/atol_online_v1_4/utils/const_app.dart';
 import 'package:http/http.dart' as httpImport;
 
 class ApiRequestAtolCheckImpl implements ApiRequestAtolCheck {
-  final String tokenCurrent;
-  ApiRequestAtolCheckImpl({required this.tokenCurrent});
+  late String? tokenCurrent;
+  ApiRequestAtolCheckImpl();
+
+  @override
+  void addToken(String tokenCurrent){
+    this.tokenCurrent = tokenCurrent;
+  }
 
   /// ### Пример регистрации чека с операцией «Приход»:
   /// ```
@@ -19,6 +24,9 @@ class ApiRequestAtolCheckImpl implements ApiRequestAtolCheck {
   /// * Token: <token>
   @override
   Future<Map> createCheck(ExchangeInfo model, String codeGroup) async {
+    if(tokenCurrent != null){
+      throw Exception('Emtpy token');
+    }
     final Map<String, dynamic> bodyParams = model.toMap();
 
     final url = Uri.https(
@@ -28,7 +36,7 @@ class ApiRequestAtolCheckImpl implements ApiRequestAtolCheck {
     final headerParam = {
       'Content-Type':
           'application/json; charset=utf-8', //'application/json; charset=utf-8'
-      'Token': tokenCurrent
+      'Token': tokenCurrent!
     };
 
     final response = await httpImport.post(
@@ -37,8 +45,6 @@ class ApiRequestAtolCheckImpl implements ApiRequestAtolCheck {
       body: jsonEncode(bodyParams),
     );
     final decode = jsonDecode(response.body);
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
     if (response.statusCode == 200) {
       return decode;
     } else {
@@ -48,6 +54,9 @@ class ApiRequestAtolCheckImpl implements ApiRequestAtolCheck {
 
   @override
   Future<dynamic> returnCheck() {
+    if(tokenCurrent != null){
+      throw Exception('Emtpy token');
+    }
     // TODO: implement returnCheck
     throw UnimplementedError();
   }

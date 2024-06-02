@@ -4,5 +4,6 @@ import 'package:atol_online_dart/atol_online_v1_4/model/request_model_exchange_i
 abstract class RepositoryCheck {
   final ApiRequestAtolCheck apiReq;
   RepositoryCheck(this.apiReq);
+  void addToken(String token);
   Future<dynamic> createCheck(ExchangeInfo exchangeInfo, String codeGroup);
 }

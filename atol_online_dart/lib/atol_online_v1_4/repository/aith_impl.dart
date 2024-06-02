@@ -12,7 +12,6 @@ class RepositoryAuthImpl implements RepositoryAuth {
     await CheckNetworkCustom.checkNetwork();
     final String result = await apiReq.getAuthToken(
         login: modelSettings.login, password: modelSettings.password);
-    print(result);
     return result;
   }
 }

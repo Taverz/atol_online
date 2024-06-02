@@ -6,12 +6,16 @@ import 'package:atol_online_dart/check_network.dart';
 class RepositoryCheckImpl implements RepositoryCheck {
   final ApiRequestAtolCheck apiReq;
   const RepositoryCheckImpl(this.apiReq);
+
+  @override
+  void addToken(String token){
+    apiReq.addToken(token);
+  }
   
   @override
   Future<dynamic> createCheck(ExchangeInfo exchangeInfo, String codeGroup) async {
     await CheckNetworkCustom.checkNetwork();
     final Map<dynamic, dynamic> result = await apiReq.createCheck(exchangeInfo, codeGroup);
-    print(result);
     return result;
   }
 }

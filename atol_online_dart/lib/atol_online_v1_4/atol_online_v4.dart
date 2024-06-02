@@ -8,62 +8,49 @@ import 'package:atol_online_dart/atol_online_v1_4/repository/check_impl.dart';
 import 'package:atol_online_dart/atol_online_v1_4/test_model/test_settings.dart';
 
 
-/// TODO: Переделать на подобие UseCase который не знает о содержимом фичи Аторизации и Чека
 class AtolOnlineV4 {
   final ModelSettings settingStore;
   final Shop shop;
   final RepositoryAuth reposAuth;
-  RepositoryCheck? reposCheck;
-  String? token;
+  final RepositoryCheck reposCheck;
+  String? _token;
 
   AtolOnlineV4({
     required this.settingStore,
     required this.shop,
-  }) : this.reposAuth = RepositoryAuthImpl(ApiRequestAtolAuthImpl());
+  }) :  this.reposAuth = RepositoryAuthImpl(ApiRequestAtolAuthImpl()),
+        this.reposCheck = RepositoryCheckImpl(ApiRequestAtolCheckImpl());
+  
+  AtolOnlineV4.repository({
+    required this.settingStore,
+    required this.shop,
+    required this.reposAuth,
+    required this.reposCheck,
+  });
+
+  bool get isAvialableToken => _token != null;
+  String? get token => _token;
 
 
   /// 1 Step
   Future<void> auth() async {
+    _token = null;
     final resultToken = await reposAuth.getAuthToken(shop.access);
-    token = resultToken;
-    this.reposCheck = RepositoryCheckImpl(ApiRequestAtolCheckImpl(tokenCurrent: token!));
+    _token = resultToken;
+    if (_token == null) {
+      throw Exception('No create token from init repo');
+    }
+    reposCheck.addToken(_token!);
   }
 
   /// 2 Step
   Future<dynamic> createCheck(ExchangeInfo exchangeInfo) async {
-    if (reposCheck == null || token == null) {
-      throw Exception('No create token from init repo');
+    if (_token == null) {
+      throw Exception('No create token from init repo, need call auth() method');
     }
     final result =
-        await reposCheck!.createCheck(exchangeInfo, shop.access.groupCode);
+        await reposCheck.createCheck(exchangeInfo, shop.access.groupCode);
     print(result);
   }
 
-}
-
-
-abstract class UseCheck {
-  createCheck(){}
-}
-
-class SimpleCheck  implements UseCheck{
-  createCheck(){}
-}
-abstract class UseAuth {
-  authLogin(){}
-}
-
-class SimpleAuth  implements UseAuth{
-  authLogin(){}
-}
-class AtolOnl {
-  UseCheck useCheck = SimpleCheck();
-  UseAuth useAuth = SimpleAuth();
-  auth(){
-    useAuth.authLogin();
-    // useCheck = 
-  }
-  check(){
-    useCheck.createCheck();
-  }
 }
