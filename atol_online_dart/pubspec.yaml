@@ -12,7 +12,8 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  http: ^1.2.1
+  # http: ^1.2.1
+  dio: ^5.3.3 # - from service connect
 
 dev_dependencies:
   lints: ^4.0.0
